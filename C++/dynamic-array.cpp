@@ -115,6 +115,15 @@ class DynamicArray {
             length += 1;
             end += 1;
         }
+
+        void prepend(const T& value) {
+            if (start == 0) {
+                __resize(getCapacity() * 2);
+            }
+            start -= 1;
+            set_at(0, value);
+            length += 1;
+        }
 };
 
 int main() {
@@ -125,6 +134,7 @@ int main() {
     arr.append(5);
     arr.append(6);
     arr.insert(3, 4);
+    arr.prepend(0);
     arr.display();
     return 0;
 }
