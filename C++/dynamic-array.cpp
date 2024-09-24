@@ -19,7 +19,7 @@ class DynamicArray {
             std::vector<T> new_list(new_capacity);
             //Reset pointer to put content in middle of array with equal memory
             // buffers on both size
-            int new_start = capacity;
+            int new_start = capacity / 4;
             int new_end = new_start + length - 1;
             // Copy both lists to new bigger array
             for (int i = 0; i < length; i++) {
@@ -40,9 +40,14 @@ class DynamicArray {
         }
 
         void display() {
+            std::cout << "[";
             for (int i = start; i < end + 1; i++) {
                 std::cout << data[i];
+                if (i != end) {
+                    std::cout << ",";
+                }
             }
+            std::cout << "]";
         }
 
         int getLength() {
@@ -73,7 +78,7 @@ class DynamicArray {
                 }
                 return data[start + index];
             } else {
-                if (-index > getLength) {
+                if (-index > getLength()) {
                     throw std::out_of_range("Index out of bounds");
                 }
                 return data[end + index + 1];
@@ -91,13 +96,35 @@ class DynamicArray {
                     throw std::out_of_range("Index out of bounds");
                 }
                 data[end + index + 1] = value;
+            } 
+        }
+
+        void insert(int index, const T& value) {
+            if (index < 0 || index > getLength()) {
+                throw std::out_of_range("Index out of bounds");
             }
+
+            if (end == getCapacity() - 1) {
+                __resize(getCapacity() * 2);
+            }
+
+            for (int i = length; i > index; i--) {
+                set_at(i, get_at(i - 1));
+            }
+            set_at(index, value);
+            length += 1;
+            end += 1;
         }
 };
 
 int main() {
     DynamicArray<int> arr;
+    arr.append(1);
+    arr.append(2);
+    arr.append(3);
     arr.append(5);
+    arr.append(6);
+    arr.insert(3, 4);
     arr.display();
     return 0;
 }
