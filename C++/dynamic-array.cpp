@@ -8,6 +8,7 @@ class DynamicArray {
         int end;
         int length;
         int capacity;
+        bool reversed = false;
         std::vector<T> data;
 
         int getCapacity() {
@@ -63,6 +64,15 @@ class DynamicArray {
             length += 1;
         }
 
+        void prepend(const T& value) {
+            if (start == 0) {
+                __resize(getCapacity() * 2);
+            }
+            start -= 1;
+            set_at(0, value);
+            length += 1;
+        }
+
         //allows DynamicArray[] operation
         int& operator[](int index) {
             if (index < 0 || index >= getLength()) {
@@ -72,6 +82,10 @@ class DynamicArray {
         }
 
         const T& get_at(int index) {
+            if (reversed) {
+                index = -index - 1;
+            }
+
             if (index >= 0) {
                 if (index > getLength()) {
                     throw std::out_of_range("Index out of bounds");
@@ -86,6 +100,10 @@ class DynamicArray {
         }
 
         void set_at(int index, const T& value) {
+            if (reversed) {
+                index = -index - 1;
+            }
+
             if (index >= 0) {
                 if (index > getLength()) {
                     throw std::out_of_range("Index out of bounds");
@@ -116,24 +134,25 @@ class DynamicArray {
             end += 1;
         }
 
-        void prepend(const T& value) {
-            if (start == 0) {
-                __resize(getCapacity() * 2);
-            }
-            start -= 1;
-            set_at(0, value);
-            length += 1;
+        void reverse() {
+            reversed = !reversed;
         }
 };
 
 int main() {
     DynamicArray<int> arr;
     arr.append(1);
+    arr.display();
     arr.append(2);
+    arr.display();
     arr.append(3);
+    arr.display();
     arr.append(5);
+    arr.display();
     arr.append(6);
+    arr.display();
     arr.insert(3, 4);
+    arr.display();
     arr.prepend(0);
     arr.display();
     return 0;
