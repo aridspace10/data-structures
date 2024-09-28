@@ -137,6 +137,34 @@ class DynamicArray {
         void reverse() {
             reversed = !reversed;
         }
+
+        bool remove(const T& element) {
+            bool found = false;
+            for (int i = 0; i < length; i++) {
+                if (get_at(i) == element) {
+                    found = true;
+                } else if (found) {
+                    set_at(i, get_at(i + 1));
+                }
+            }
+            if (found) {
+                set_at(length - 1, 0);
+                length -= 1;
+                end -= 1;
+            }
+            return found;
+        }
+
+        const T& remove_at(int index) {
+            const T& elem = get_at(index);
+            for (int i = index; i < length; i++) {
+                set_at(i, get_at(i + 1));
+            }
+            set_at(length - 1, 0);
+            length -= 1;
+            end -= 1;
+            return elem;
+        }
 };
 
 int main() {
@@ -154,6 +182,10 @@ int main() {
     arr.insert(3, 4);
     arr.display();
     arr.prepend(0);
+    arr.display();
+    arr.remove_at(4);
+    arr.display();
+    arr.remove(2);
     arr.display();
     return 0;
 }
