@@ -1,12 +1,8 @@
 #include "node.cpp"
 template <typename T>
 class DoubleLinkedList {
-    public:
-        Node<T> head;
-        Node<T> tail;
-        int size;
-
-        void insert_to_back(const T& value) {
+    private:
+        void _insert_to_back(const T& value) {
             if (size == 0) {
                 head = Node<T>(value);
                 tail = Node<T>(value);
@@ -19,7 +15,7 @@ class DoubleLinkedList {
             size += 1;
         }
 
-        void insert_to_front(const T& value) {
+        void _insert_to_front(const T& value) {
             if (size == 0) {
                 head = Node<T>(value);
                 tail = Node<T>(value);
@@ -31,4 +27,31 @@ class DoubleLinkedList {
             }
             size += 1;
         }
+
+    public:
+        Node<T> head;
+        Node<T> tail;
+        int size;
+        bool reversed;
+
+        void insert_to_back(const T& value) {
+            if (reversed) {
+                _insert_to_front(value);
+            } else {
+                _insert_to_back(value);
+            }
+        }
+
+        void insert_to_front(const T& value) {
+            if (reversed) {
+                _insert_to_back(value);
+            } else {
+                _insert_to_front(value);
+            }
+        }
+
+        void reverse() {
+            reversed = !reversed;
+        }
+
 };
